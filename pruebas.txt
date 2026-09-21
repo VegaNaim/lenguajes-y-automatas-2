@@ -1,0 +1,12 @@
+resultado = 100;
+variable_1 = 3.1416;
+x = y + z;
+area = ( base * altura ) / 2;
+total = precio + ( iva * 0.16 );
+contador = contador + 1;
+1_variable_invalida = 50;
+@rroba_no_ey_cxiste = 10;
+falta_punto_oma = 5
+;
+= sin_identificador;
+x = 10..5;

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 int obtenerCategoria(char c) {
@@ -17,23 +18,23 @@ int obtenerCategoria(char c) {
     char PDer[1] = {')'};
     char PyC[1] = {';'};
 
-    for (int col = 0; col < 52; col++) { if (L[col] == c) return 0; }   // 0: Letra
-    for (int col = 0; col < 10; col++) { if (N[col] == c) return 1; }   // 1: Digito
-    for (int col = 0; col < 1; col++)  { if (Guion[col] == c) return 2; } // 2: [_]
-    for (int col = 0; col < 4; col++)  { if (Esp[col] == c) return 3; }   // 3: [\s]
-    for (int col = 0; col < 1; col++)  { if (Ig[col] == c) return 4; }    // 4: [=]
-    for (int col = 0; col < 4; col++)  { if (Op[col] == c) return 5; }    // 5: Operador
-    for (int col = 0; col < 1; col++)  { if (Pto[col] == c) return 6; }   // 6: [.]
-    for (int col = 0; col < 1; col++)  { if (PIzq[col] == c) return 7; }  // 7: [(]
-    for (int col = 0; col < 1; col++)  { if (PDer[col] == c) return 8; }  // 8: [)]
-    for (int col = 0; col < 1; col++)  { if (PyC[col] == c) return 9; }   // 9: [;]
+    for (int col = 0; col < 52; col++) { if (L[col] == c) return 0; }       // 0: Letra
+    for (int col = 0; col < 10; col++) { if (N[col] == c) return 1; }       // 1: Digito
+    for (int col = 0; col < 1; col++)  { if (Guion[col] == c) return 2; }   // 2: [_]
+    for (int col = 0; col < 4; col++)  { if (Esp[col] == c) return 3; }     // 3: [\s]
+    for (int col = 0; col < 1; col++)  { if (Ig[col] == c) return 4; }      // 4: [=]
+    for (int col = 0; col < 4; col++)  { if (Op[col] == c) return 5; }      // 5: Operador
+    for (int col = 0; col < 1; col++)  { if (Pto[col] == c) return 6; }     // 6: [.]
+    for (int col = 0; col < 1; col++)  { if (PIzq[col] == c) return 7; }    // 7: [(]
+    for (int col = 0; col < 1; col++)  { if (PDer[col] == c) return 8; }    // 8: [)]
+    for (int col = 0; col < 1; col++)  { if (PyC[col] == c) return 9; }     // 9: [;]
     
-    return 10; // 10: Cualquier otra cosa (Error)
+    return 10; // 10: (Error)
 }
 
-void Automata_Aritmetico() {    
+void Automata_Aritmetico(string cadena) {    
     int ID[19][11] = {
-    //   L    D    _   \s    =   Op    .    (    )    ;   Otro
+//        L    D    _   \s    =   Op    .    (    )    ;   Otro
         { 1,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18 }, // Estado 0  (q0)
         { 1,   1,   1,   2,  18,  18,  18,  18,  18,  18,  18 }, // Estado 1  (q1)
         {18,  18,  18,   2,   3,  18,  18,  18,  18,  18,  18 }, // Estado 2  (q2)
@@ -52,15 +53,13 @@ void Automata_Aritmetico() {
         { 4,   5,  18,  16,  18,  18,  18,  18,  18,  18,  18 }, // Estado 15 (q15)
         { 4,   5,  18,  16,  18,  18,  18,  18,  18,  18,  18 }, // Estado 16 (q16)
         {18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18 }, // Estado 17 (qF)
-        {18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18 }  // Estado 18 (qE - Trampa)
+        {18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18 }  // Estado 18 (qE)
     };
 
     int estado_actual = 0;
-    cout << "El estado actual es: " << estado_actual << endl;      
-    string cadena;
-    cout << "Ingresa la cadena a evaluar: ";
-    getline(cin, cadena);
 
+    cout << "\nEvaluando: " << cadena << endl;
+    
     if (cadena.empty()) {
         cout << "\n--- ANALISIS COMPLETADO ---" << endl;
         cout << "RESULTADO: [RECHAZADO]" << endl;
@@ -68,13 +67,47 @@ void Automata_Aritmetico() {
         return;
     }
 
+    cout << "LEXEMA\t\tTOKEN" << endl;
+    cout << "-----------------------" << endl;
+
     int longitudcadena = cadena.length();
     for (int i = 0; i < longitudcadena; i++) {
         char caracter_actual = cadena[i];
         int cat_actual = obtenerCategoria(caracter_actual);
         estado_actual = ID[estado_actual][cat_actual];
-        
-        if (estado_actual == 18) break;
+        if (cat_actual == 0) {
+            cout << caracter_actual << "\t\t[IDEVAR]" << endl;
+        }
+        if (cat_actual == 1) {
+            cout << caracter_actual << "\t\t[INTNUM]" << endl;
+        }
+        if (cat_actual == 2) {
+            cout << caracter_actual << "\t\t[SYMGUI]" << endl;
+        }
+        if (cat_actual == 3) {
+            cout << caracter_actual << "\t\t[VOIDSP]" << endl;
+        }
+        if (cat_actual == 4) {
+            cout << caracter_actual << "\t\t[SYMASG]" << endl;
+        }
+        if (cat_actual == 5) {
+            cout << caracter_actual << "\t\t[SYMOPR]" << endl;
+        }
+        if (cat_actual == 6) {
+            cout << caracter_actual << "\t\t[SYMPUN]" << endl;
+        }
+        if (cat_actual == 7) {
+            cout << caracter_actual << "\t\t[PARIZQ]" << endl;
+        }
+        if (cat_actual == 8) {
+            cout << caracter_actual << "\t\t[PARDER]" << endl;
+        }
+        if (cat_actual == 9) {
+            cout << caracter_actual << "\t\t[DELPYC]" << endl;
+        } 
+        if (cat_actual == 10) {
+            cout << caracter_actual << "\t\t[ERLEX]" << endl;
+        }
     }
 
     cout << "\n--- ANALISIS COMPLETADO ---" << endl;
@@ -95,22 +128,31 @@ void Automata_Aritmetico() {
     }
 }
 
-int main(){   
-    while (true) {
-    	cout << "--- BIENVENIDO AL PROGRAMA DE AUTOMATAS ---" << endl;
-	    cout << "Ingrese 1 para evaluar operaciones aritmeticas, o ingresa cero para terminar: ";
-	    string entrada;
-	    getline(cin,entrada);
-	    if (entrada == "0"){
-	    	break;
-		}
-	    if (entrada == "1"){
-	        Automata_Aritmetico();
-	    }
-	    else {
-	        cout << "Opcion no valida." << endl;
-	    }
-	}
-	cout << "Programa finalizado con exito." << endl;
+int main() {   
+    string nombre_archivo = "pruebas.txt";
+    ifstream archivo(nombre_archivo);
+    
+    if (archivo.is_open()==false) {
+        cout << "ERROR: No se pudo abrir '" << nombre_archivo << "'. Asegurate de que el txt este en la misma carpeta que el ejecutable." << endl;
+        return 1;
+    }
+
+    string linea;
+    bool archivo_tiene_datos = false;
+
+    cout << "=== PROCESANDO ARCHIVO: " << nombre_archivo << " ===" << endl;
+    
+    while (getline(archivo, linea)) {
+        if (linea.empty()==false) {
+            archivo_tiene_datos = true;
+            Automata_Aritmetico(linea);
+        }
+    }
+
+    if (archivo_tiene_datos==false) {
+        cout << "El archivo esta completamente vacio. No hay nada que evaluar." << endl;
+    }
+    
+    archivo.close();
     return 0;
 }
