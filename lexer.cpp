@@ -1,7 +1,77 @@
+/*****************************************
+LENGUAJES Y AUTÓMATAS II
+GRUPO; 6A
+DOCENTE; MARIBEL BUENO QUIÑONES
+EQUIPO; 8
+INTEGRANTES;
+LEÓN LICEA JAFET GUIVANNI
+RUIZ JAIME MATEO
+VEGA LEDESMA NAIM
+ETAPA 1 - 18-09-2026 - ETAPA 1 DEL PROYECTO FINAL
+*****************************************/
+
 #include <iostream>
 #include <string>
 #include <fstream>
 using namespace std;
+
+int obtenerCategoria(char);
+void Automata_Aritmetico(string);
+
+int main() {   
+    string nombre_archivo = "pruebas.txt";
+    int opcion = -1;
+
+    do {
+        cout << "\n========================================" << endl;
+        cout << "          MENU            " << endl;
+        cout << "========================================" << endl;
+        cout << "1. Evaluar 'pruebas.txt'" << endl;
+        cout << "0. Salir" << endl;
+        cout << "Ingrese una opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1: {
+                ifstream archivo(nombre_archivo);
+                
+                if (!archivo.is_open()) {
+                    cout << "\nERROR: No se pudo abrir '" << nombre_archivo << "'. Asegurase de que el txt este en la misma carpeta que el ejecutable." << endl;
+                    break;
+                }
+
+                string linea;
+                bool archivo_tiene_datos = false;
+
+                cout << "\n=== PROCESANDO ARCHIVO: " << nombre_archivo << " ===" << endl;
+                
+                while (getline(archivo, linea)) {
+                    if (!linea.empty()) {
+                        archivo_tiene_datos = true;
+                        Automata_Aritmetico(linea);
+                    }
+                }
+
+                if (!archivo_tiene_datos) {
+                    cout << "\nEl archivo esta completamente vacio. No hay nada que evaluar." << endl;
+                }
+                
+                archivo.close();
+                break;
+            }
+            case 0:
+                cout << "\nSaliendo del programa..." << endl;
+                break;
+
+            default:
+                cout << "\nOpcion invalida. Por favor, ingrese 1 para ejecutar o 0 para salir." << endl;
+                break;
+        }
+
+    } while (opcion != 0);
+
+    return 0;
+}
 
 int obtenerCategoria(char c) {
     char L[52] = {
@@ -34,28 +104,27 @@ int obtenerCategoria(char c) {
 
 void Automata_Aritmetico(string cadena) {    
     int ID[19][11] = {
-//        L    D    _   \s    =   Op    .    (    )    ;   Otro
+//        L   D   _  \s   =  Op   .   (   )   ; Otro
         { 1, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18 }, // Estado 0  (q0)
         { 1,  1,  1,  2, 18, 18, 18, 18, 18, 18, 18 }, // Estado 1  (q1)
         {18, 18, 18,  2,  3, 18, 18, 18, 18, 18, 18 }, // Estado 2  (q2)
         { 4,  5, 18,  3, 18, 18, 18,  8, 18, 18, 18 }, // Estado 3  (q3)
-        { 4,  4,  4, 10, 18, 18, 18, 18, 11, 18, 18 }, // Estado 4  (q4)
-        {18,  5, 18, 10, 18, 18,  6, 18, 11, 18, 18 }, // Estado 5  (q5)
+        { 4,  4,  4, 10, 18, 13, 18, 18, 11, 17, 18 }, // Estado 4  (q4)
+        {18,  5, 18, 10, 18, 13,  6, 18, 11, 17, 18 }, // Estado 5  (q5)  
         {18,  7, 18, 18, 18, 18, 18, 18, 18, 18, 18 }, // Estado 6  (q6)
-        {18,  7, 18, 10, 18, 18, 18, 18, 11, 18, 18 }, // Estado 7  (q7)
-        { 4,  5, 18,  9, 18, 18, 18, 18, 18, 18, 18 }, // Estado 8  (q8)
-        { 4,  5, 18,  9, 18, 18, 18, 18, 18, 18, 18 }, // Estado 9  (q9)
-        {18, 18, 18, 10, 18, 18, 18, 18, 11, 18, 18 }, // Estado 10 (q10)
-        {18, 18, 18, 12, 18, 18, 18, 18, 18, 18, 18 }, // Estado 11 (q11)
+        {18,  7, 18, 10, 18, 13, 18, 18, 11, 17, 18 }, // Estado 7  (q7)  
+        { 4,  5, 18,  8, 18, 18, 18,  8, 18, 18, 18 }, // Estado 8  (q8)
+        { 4,  5, 18,  9, 18, 18, 18,  8, 18, 18, 18 }, // Estado 9  (q9)
+        {18, 18, 18, 10, 18, 13, 18, 18, 11, 17, 18 }, // Estado 10 (q10)
+        {18, 18, 18, 11, 18, 13, 18, 18, 11, 17, 18 }, // Estado 11 (q11)
         {18, 18, 18, 12, 18, 13, 18, 18, 11, 17, 18 }, // Estado 12 (q12)
-        { 4,  5, 18, 14, 18, 18, 18, 15, 18, 18, 18 }, // Estado 13 (q13)
-        { 4,  5, 18, 14, 18, 18, 18, 18, 18, 18, 18 }, // Estado 14 (q14)
-        { 4,  5, 18, 16, 18, 18, 18, 18, 18, 18, 18 }, // Estado 15 (q15)
-        { 4,  5, 18, 16, 18, 18, 18, 18, 18, 18, 18 }, // Estado 16 (q16)
+        { 4,  5, 18, 14, 18, 18, 18, 15, 18, 18, 18 }, // Estado 13 (q13) 
+        { 4,  5, 18, 14, 18, 18, 18, 15, 18, 18, 18 }, // Estado 14 (q14)
+        { 4,  5, 18, 15, 18, 18, 18,  8, 18, 18, 18 }, // Estado 15 (q15)
+        { 4,  5, 18, 16, 18, 18, 18,  8, 18, 18, 18 }, // Estado 16 (q16)
         {18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18 }, // Estado 17 (qF)
         {18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18 }  // Estado 18 (qE)
     };
-
 
     int estado_actual = 0;
 
@@ -127,33 +196,4 @@ void Automata_Aritmetico(string cadena) {
         cout << "La entrada \"" << cadena << "\" no alcanzo un estado de aceptacion." << endl;
         cout << "Estado final: q" << estado_actual << endl;
     }
-}
-
-int main() {   
-    string nombre_archivo = "pruebas.txt";
-    ifstream archivo(nombre_archivo);
-    
-    if (archivo.is_open()==false) {
-        cout << "ERROR: No se pudo abrir '" << nombre_archivo << "'. Asegurate de que el txt este en la misma carpeta que el ejecutable." << endl;
-        return 1;
-    }
-
-    string linea;
-    bool archivo_tiene_datos = false;
-
-    cout << "=== PROCESANDO ARCHIVO: " << nombre_archivo << " ===" << endl;
-    
-    while (getline(archivo, linea)) {
-        if (linea.empty()==false) {
-            archivo_tiene_datos = true;
-            Automata_Aritmetico(linea);
-        }
-    }
-
-    if (archivo_tiene_datos==false) {
-        cout << "El archivo esta completamente vacio. No hay nada que evaluar." << endl;
-    }
-    
-    archivo.close();
-    return 0;
 }
