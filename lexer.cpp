@@ -176,7 +176,7 @@ void Automata_Aritmetico(string cadena) {
             cout << caracter_actual << "\t\t[DELPYC]" << endl;
         } 
         if (cat_actual == 10) {
-            cout << caracter_actual << "\t\t[ERLEX]" << endl;
+            cout << caracter_actual << "\t\t[ERRLEX]" << endl;
         }
     }
 
