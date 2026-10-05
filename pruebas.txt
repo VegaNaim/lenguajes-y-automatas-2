@@ -10,3 +10,7 @@ falta_punto_oma = 5
 ;
 = sin_identificador;
 x = 10..5;
+x=a+b;
+a= 10 + b;
+y = 5;
+x = 5 ;
