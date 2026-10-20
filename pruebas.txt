@@ -14,3 +14,7 @@ x=a+b;
 a= 10 + b;
 y = 5;
 x = 5 ;
+b = 14.7 + 52.3 ;
+resultado_final = (dato1 + 10.75) * (variable_2 - (45 / 3.1416));
+x = (a + 5;
+total = 10;
